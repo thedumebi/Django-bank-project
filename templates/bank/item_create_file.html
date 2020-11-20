@@ -1,0 +1,32 @@
+{% extends "base_menu.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% load static %}
+
+<section id="title" class="colored-section">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-6">
+          <h1 class="section-heading">Add to the inventory with a file upload</h1>
+          <p>kindly ensure the file is in the right format and columns as specified.</p>
+        </div>
+  
+        <div class="col-lg-6">
+          <img class="title-image" src="{% static "home/SVG/unsad2.svg" %}">
+        </div>
+      </div>
+    </div>
+</section>
+
+<div class="container-fluid">
+    <form action="" method="POST" enctype="multipart/form-data" action="{% url 'bank:item_create_file' %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="btn btn-lg btn-dark" type="submit">submit</button>
+        <button class="btn btn-md btn-dark" type="button" onclick="window.location.href='{% url 'bank:item_list' %}'; return false">No, cancel</button>
+    </form>
+</div>
+
+
+{% endblock %}

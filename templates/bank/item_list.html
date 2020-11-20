@@ -1,0 +1,90 @@
+{% extends "base_menu.html" %}
+{% block content %}
+{% load template_filters %}
+{% load static %}
+
+<section id="title" class="colored-section">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-6">
+        <h1 class="section-heading">Item List</h1>
+        <p>Scroll to view all available items under each available category.</p>
+      </div>
+
+      <div class="col-lg-6">
+        <img class="title-image" src="{% static "home/SVG/peek.svg" %}">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="search">
+  <div class="search-box">
+    <!-- https://www.w3schools.com/howto/howto_css_search_button.asp -->
+    <form>
+      <input type="text" placeholder="Search for an item..." name="search" {% if search %} value="{{ search }}" {% endif %}>
+      <button type="submit"><i class="fa fa-search"></i></button>
+      <a href="{% url 'bank:item_list' %}"><i class="fa fa-undo"></i></a>
+    </form>
+  </div>
+</section>
+
+
+{% if item_list %}
+  {% for dict in item_dict %}
+    <div class="container-fluid item-rack">
+      <hr>
+      <button class="btn btn-md btn-dark" type="button" onclick="ListDrop({{ item_dict|lookup:dict }});"> {{ dict }} <i id="ldrop_{{ item_dict|lookup:dict }}" class="fa fa-angle-up"></i></button><br>
+      <div class="row items">
+        {% for item in item_list %}
+          {% if dict == item.category.name %}
+            <div class="col-lg-2 col-md-3 col-sm-4 individual-item list_{{item_dict|lookup:dict}}">
+              <a href="{% url 'bank:item_detail' item.id %}">{{item.name}}</a> <small>{{ item.natural_updated }}</small><br>
+              <small>(<a href="{% url 'bank:item_update' item.id %}">update item details</a>)
+              <br>(<a href="{% url 'bank:item_delete' item.id %}">delete item</a>)</small>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <!-- <ul id="horizontal_list">
+        <button type="button" onclick="ListDrop({{ item_dict|lookup:dict }});"> {{ dict }} <i id="ldrop_{{ item_dict|lookup:dict }}" class="fa fa-angle-up"></i></button><br>
+        {% for item in item_list %}
+          {% if dict == item.category.name %}
+            div
+            <li class="list_{{item_dict|lookup:dict}}">
+              <a href="{% url 'bank:item_detail' item.id %}">{{item.name}}</a> <small>{{ item.natural_updated }}</small><br>
+              <small>(<a href="{% url 'bank:item_update' item.id %}">update item details</a>)
+              <br>(<a href="{% url 'bank:item_delete' item.id %}">delete item</a>)</small>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul> -->
+    </div>
+  {% endfor %}
+{% else %}
+  <div class="container-fluid colored-section">
+    <p>There are no items available.</p>
+  </div>
+{% endif %}
+
+<br>
+<div class="container-fluid colored-section home">
+  <a href="{% url 'bank:item_create' %}">Add a non-existing item to the store</a> 
+<br>
+<p><a href="{% url 'bank:all' %}">Back to home</a></p>
+<p>
+  {% if user.is_authenticated %}
+  <a href="{% url 'logout' %}?next={% url 'home:all' %}">Logout</a>
+  {% else %}
+  <a href="{% url 'login' %}?next={% url 'bank:all' %}">Login</a>
+  {% endif %}
+</p>
+</div>
+
+<script>
+  function ListDrop(category_id) {
+    $('.list_' + category_id).toggle();
+    $('#ldrop_' + category_id).toggleClass(' fa fa-angle-down fa fa-angle-up');
+  }
+</script>
+{% endblock %}

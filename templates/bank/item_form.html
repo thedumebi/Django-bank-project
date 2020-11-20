@@ -1,0 +1,49 @@
+{% extends "base_menu.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid colored-section">
+    <div class="row">
+      <div class="col-lg-6">
+        <h1 class="section-heading">Add/Edit a new Item.</h1>
+        <p>Please ensure that the item does not already exist.<br>
+        <small>(also ensure that there is no <em>typographical error</em>. 🙂)</small></p>
+        
+      </div>
+      <div class="col-lg-6">
+        <img class="title-image" src="{% static "home/SVG/unsad2.svg" %}">
+      </div>
+    </div>
+    
+</div>
+
+<div class="container-fluid">
+    <form action="" method="POST" id="upload_form" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="btn btn-md btn-dark" type="submit">Submit</button>
+        <button class="btn btn-md btn-dark" type="button" onclick="window.location.href='{% url 'bank:item_list' %}'; return false">Cancel</button>
+        </form>
+</div>
+    
+
+<br>
+<div class="container-fluid colored-section home">
+    You can upload from a file(csv) instead.😉<br>
+    <button class="btn btn-md btn-light" onclick="window.location.href='{% url 'bank:item_create_file' %}'; return false;">Upload CSV file</button>
+</div>
+
+<script>
+    $('#upload_form').submit(function(){
+        console.log('Checking file size');
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            var file = $('#id_{{ form.upload_field_name }}')[0].files[0];
+            if (file && file.size > {{ form.max_upload_limit }}){
+                alert('File'+file.name+ 'of type' +file.type+) 'must be < {{ form.max_upload_limit_text}}');
+                return false;
+            }
+        }
+    })
+</script>
+{% endblock %}

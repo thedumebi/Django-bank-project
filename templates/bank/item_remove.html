@@ -1,0 +1,32 @@
+{% extends "base_menu.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<p>
+    <form action="" method="POST" id="removeform" enctype="multipart/form-data" data-items-url="{% url 'bank:ajax_load_items' %}">
+    {% csrf_token %}
+    {{ form|crispy }}
+    {% if error_message %} {{ error_message }}{% endif %}
+    {{ q_form|crispy }}
+    <input type="submit" value="Submit">
+    <input type="submit" value="Cancel" onclick="window.location.href='{% url 'bank:all' %}'; return false;">
+    </form>
+</p>
+
+<script>
+    $(document).ready(function(){
+        var url = $('#removeform').attr('data-items-url');
+        var categoryId = $('#id_category').val();
+        $.ajax({
+            url: url,
+            data: {
+                'category': categoryId
+            },
+            success: function (data){
+                $('#id_item').html(data);
+            }
+        });
+        console.log("here")
+    });
+</script>
+{% endblock %}

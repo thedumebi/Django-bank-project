@@ -1,0 +1,52 @@
+{% extends "base_menu.html" %}
+{% block content %}
+{% load static %}
+
+<section id="title" class="colored-section">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-6">
+        <h1 class="section-heading">{{category.name}} detail</h1>
+        <p>These are all the items available under the category you selected</p>
+      </div>
+
+      <div class="col-lg-6">
+        <img class="title-image" src="{% static "home/SVG/category.svg" %}">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% if category %}
+<div class="category container-fluid white-section">
+    <button class="btn btn-lg btn-dark" type="button" onclick="ListDrop({{ category.id }});"> {{ category.name }} <i id="ldrop_{{ category.id }}" class="fa fa-angle-up"></i></button><br>
+    {% for item in item_list %}
+        {% if item.category.name == category.name %}
+            <li class="list_{{item.category.id}}"><a href="{% url 'bank:item_detail' item.id %}">{{item.name}}</a></li>
+        {% endif %}
+    {% endfor %}
+    <hr>
+</div>
+{% endif %}
+
+<div class="container-fluid colored-section home">
+    <a href="{% url 'bank:item_create' %}">Add a non-existing item to the category</a>
+    <br>
+    <a href="{% url 'bank:category_list' %}">Back to all categories</a>
+    <p>
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}?next={% url 'home:all' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}?next={% url 'bank:all' %}">Login</a>
+        {% endif %}
+    </p>
+</div>
+
+<script>
+    function ListDrop(category_id){
+        $('.list_'+category_id).toggle();
+        $('#ldrop_'+category_id).toggleClass(' fa fa-angle-down fa fa-angle-up');
+    }
+</script>
+{% endblock %}

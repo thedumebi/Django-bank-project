@@ -1,0 +1,47 @@
+{% extends "base_menu.html" %}
+{% block content %} 
+{% load static %}
+
+<section id="title" class="colored-section">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-6">
+        <h1 class="section-heading">Item categories</h1>
+        <p>View all available categories below.</p>
+      </div>
+
+      <div class="col-lg-6">
+        <img class="title-image" src="{% static "home/SVG/category.svg" %}">
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if category_list %}
+  {% for category in category_list %}
+  <div class="category container-fluid white-section">
+    <hr>
+    <h6><a href="{% url 'bank:category_detail' category.id %}">{{category.name}}</a>
+    (<a href="{% url 'bank:category_update' category.id %}">Update</a>) | (<a href="{% url 'bank:category_delete' category.id %}">Delete</a>)</h6>
+    
+  </div>
+
+  {% endfor %}
+
+{% else %}
+<div class="container-fluid colored-section">
+    <p>There are no categories in the database</p>
+    <p>Add a <strong><a href="{% url 'bank:category_create' %}">Category</a></strong></p>
+</div>
+
+{% endif %}
+
+<div class="container-fluid colored-section home">
+    <p>
+        <a href="{% url 'bank:category_create' %}">Add a new category</a> or
+        <a href="{% url 'bank:item_create' %}">Add a new item to a category</a>
+        <br /><a href="{% url 'bank:all' %}">Back to home.</a>
+      </p>
+</div>
+
+{% endblock %}

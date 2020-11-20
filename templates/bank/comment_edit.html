@@ -1,0 +1,64 @@
+{% extends "base_menu.html" %}
+{% load humanize %}
+
+{% block content %}
+<div id="overlay" class="overlay">
+    {% if item.content_type %}
+        <img class="overlay-hidden" src="{% url 'bank:item_picture' item.id %}">
+    {% endif %}
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-6">
+            <h1>{{ item.name }}</h1>
+            <p>({{ comment.item.updated_at|naturaltime }})</p>
+            <p>
+                {% if user.is_authenticated %}
+                {% load crispy_forms_tags %}
+                <form method="POST" action="{% url 'bank:item_comment_edit' comment.id %}" style="max-width: 40%;">
+                {% csrf_token %}
+                {{ comment_item|crispy }}
+                <button class="btn btn-md btn-dark" type="submit">Submit</button>
+                <button class="btn btn-md btn-dark" type="button" onclick="window.location.href='{% url 'bank:item_detail' item.id %}'; return false">Cancel</button>
+                </form>
+                {% endif %}
+            </p>
+
+            {% for comment in comments %}
+            <p>{{ comment.text }}
+            ({{ comment.updated_at|naturaltime }})
+            {% if user == comment.user %}
+            <a href="{% url 'bank:item_comment_edit' comment.id %}"><i class="fa fa-pencil"></i></a>
+            <a href="{% url 'bank:item_comment_delete' comment.id %}"><i class="fa fa-trash"></i></a>
+            {% endif %}
+            </p>
+            {% endfor %}
+        </div>
+
+        <div class="col-lg-6">
+            {% if item.content_type %}
+                <img src="{% url 'bank:item_picture' item.id %}" class="item-detail-picture">
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid colored-section home">
+    <p><a href="{% url 'bank:item_list' %}">All items</a></p>
+</div>
+
+<script type="text/javascript">
+    {% if item.quantity <= 5 %}
+    alert("You have only {{item.quantity}} left, please restock if neccesary");
+    {% endif %}
+    $(".overlay").click(function() {
+        $(".overlay").css("display", "none");
+    });
+
+    $(".item-detail-picture").click(function() {
+        $(".overlay").css("display", "block");
+    });
+</script>
+
+{% endblock %}

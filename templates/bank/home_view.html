@@ -1,0 +1,61 @@
+{% extends "base_menu.html" %} {% block content %} {% load static %}
+
+<div class="home">
+    <section id="title" class="colored-section">
+        <div class="container-fluid">
+      
+          <div class="row">
+      
+            <div class="col-lg-6">
+              <h1 class="big-heading">Welcome to the bank inventory application.</h1>
+              <p>What would you like to do today?</p>
+              <small><em>(NB: Each item must belong in a category. If category doesn't exist
+                already, create one first.)</em></small>
+            </div>
+      
+            <div class="col-lg-6">
+              <img class="title-image" src="{% static "home/SVG/bank.svg" %}">
+            </div>
+      
+          </div>
+      
+        </div>
+      </section>
+      
+      <div class="container-fluid white-section">
+      
+          <h3 class="section-heading">View Available Categories.</h3>
+          <div class="row">
+            <div class="col-lg-12">
+              <p>Take a look at all the existing categories that are available <a href="{% url 'bank:category_list' %}">here</a>.</p>
+            </div>
+            <div class="col-lg-12">
+              <img class="section-image" src="{% static "home/SVG/category.svg" %}">
+            </div>
+          </div>
+          
+        </div>
+      
+        <div class="container-fluid colored-section">
+            
+          <h3 class="section-heading">Category doesn't exist yet?</h3>
+          <p>Not to worry, we got you covered boss. Add a new category <a href="{% url 'bank:category_create' %}">here</a>.</p>
+          <img class="section-image" src="{% static "home/SVG/sad1.svg" %}">
+      
+        </div>
+      
+        <div class="container-fluid white-section">
+          <h3 class="section-heading">Take a look inside the inventory 😉</h3>
+          <p>View all items that are available according to their category <a href="{% url 'bank:item_list' %}">here</a>.</p>
+          <img class="section-image" src="{% static "home/SVG/peek.svg" %}">
+        </div>
+      
+        <div class="container-fluid colored-section">
+          <h3 class="section-heading">Item doesnt exist yet?😢</h3>
+          <p>Don't be sad! Add your item to the inventory easily. <a href="{% url 'bank:item_create' %}">Click me</a> to get started.</p>
+          <img class="section-image" src="{% static "home/SVG/sad2.svg" %}">
+        </div>
+      
+</div>
+
+{% endblock %}

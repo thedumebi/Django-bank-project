@@ -1,0 +1,4 @@
+<option value="">---------</option>
+{% for item in items %}
+    <option value="{{item.pk}}">{{item.name}} ({{ item.quantity }} left in stock)</option>
+{% endfor %}

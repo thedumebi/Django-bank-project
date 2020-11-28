@@ -3,20 +3,22 @@
 {% load static %}
 
 {% block content %}
-<div class="container-fluid colored-section">
-  <div class="row">
-    <div class="col-lg-6">
-      <h1 class="section-heading">Add a new Category.</h1>
-      <p>Please ensure that the category does not already exist.<br>
-      <small>(also ensure that there is no <em>typographical error</em>. 🙂)</small></p>
-      
+<section id="title" class="colored-section">
+  <div class="container-fluid colored-section">
+    <div class="row">
+      <div class="col-lg-6">
+        <h1 class="section-heading">Add a new Category.</h1>
+        <p>Please ensure that the category does not already exist.<br>
+        <small>(also ensure that there is no <em>typographical error</em>. 🙂)</small></p>
+      </div>
+      <div class="col-lg-6">
+        <img class="title-image" src="{% static "home/SVG/unsad1.svg" %}">
+      </div>
     </div>
-    <div class="col-lg-6">
-      <img class="title-image" src="{% static "home/SVG/unsad1.svg" %}">
-    </div>
+    
   </div>
-  
-</div>
+</section>
+
 <div class="container-fluid">
   <form action="" method="POST" id="upload_form" enctype="multipart/form-data">
     {% csrf_token %}
